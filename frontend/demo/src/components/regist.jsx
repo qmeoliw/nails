@@ -1,12 +1,23 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Registor() {
+
+    const navigate=useNavigate()
+
     const[fio, setFio]=useState('')
     const[num, setNum]=useState('')
     const[email, setEmail]=useState('')
     const[pass, setPass]=useState('')
-  const checkForm = () => {};
+  const checkForm = () => {
+    
+    if(fio.length<5 || !num || !email || !email.includes('@')  || !pass.includes('!')|| pass.length<5){
+        alert('Ошибка в заполнение данных')
+    }
+    else{
+        navigate('/profile')
+    }
+  };
 
   return (
     <>
@@ -15,7 +26,7 @@ function Registor() {
           <h1 className="m-3 font-extrabold text-3xl text-gray-800 ">
             Регистрация
           </h1>
-          <form action="">
+          <form action="" onSubmit={checkForm}>
             <p>Введите ФИО:</p>
             <input
               className="m-1 bg-pink-100  rounded-xl focus:outline-none focus:border-indigo-200 focus:shadow-md transition duration-300 py-2 px-3 text-gray-800  placeholder-gray-500 "

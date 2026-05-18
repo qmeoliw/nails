@@ -5,6 +5,7 @@ import First from './components/first';
 import Autor from './components/autor';
 import Registor from './components/regist';
 import Profile from './components/profile';
+import NewReq from './components/newReq';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
       <Route path='/autor' element={<Autor/>}/>
       {/* <Route path='/autor/regist' element={<Registor/>}/> */}
       <Route path='profile' element={<Profile/>}/>
+      <Route path='newreq' element={<NewReq/>}/>
       <Route path='/regist/profile' element={<Profile/>}/>
     <Route path='/regist/autor' element={<Autor/>}/>
     <Route path='/first' element={<First/>}/>
