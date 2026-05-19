@@ -4,18 +4,46 @@ import { Link, useNavigate } from "react-router-dom";
 function Registor() {
 
     const navigate=useNavigate()
+    const[formData, setFormData]=useState({
+      full_name:'',
+      phone:'',
+      login:'',
+      password:''
+    })
+    const [error, setError] = useState('')
 
-    const[fio, setFio]=useState('')
-    const[num, setNum]=useState('')
-    const[email, setEmail]=useState('')
-    const[pass, setPass]=useState('')
-  const checkForm = () => {
-    
-    if(fio.length<5 || !num || !email || !email.includes('@')  || !pass.includes('!')|| pass.length<5){
-        alert('Ошибка в заполнение данных')
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+        setError('') 
     }
-    else{
-        navigate('/profile')
+
+  const checkForm = async (e) => {
+    e.preventDefault()
+    
+    if(formData.full_name.length<5 || !formData.phone || !formData.login || !formData.login.includes('@')  || !formData.password.includes('!')|| formData.password.length<5){
+        alert('Ошибка в заполнение данных')
+        return
+    }
+
+    try{
+      const response= await fetch('http://localhost:3000/regist',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+        },
+        body:JSON.stringify(formData)
+      })
+      const data=await response.json()
+      if(response.ok){
+        alert('Успех')
+        navigate('/autor')
+      }else{
+        alert(data.error)
+      }
+    } catch(error){
+      console.error('Ошибка:', error)
+
     }
   };
 
@@ -31,34 +59,39 @@ function Registor() {
             <input
               className="m-1 bg-pink-100  rounded-xl focus:outline-none focus:border-indigo-200 focus:shadow-md transition duration-300 py-2 px-3 text-gray-800  placeholder-gray-500 "
               type="text"
-              name=""
+              name="full_name"
+              value={formData.full_name}
               id=""
               placeholder="ФИО"
-              onChange={(e)=>setFio(e.target.value)}
+              onChange={handleChange}
             />
             <p>Введите номер телефона:</p>
             <input
               className="m-1 bg-pink-100  rounded-xl focus:outline-none focus:border-indigo-200 focus:shadow-md transition duration-300 py-2 px-3 text-gray-800  placeholder-gray-500 "
               type="text"
-              name=""
+              name="phone"
+              value={formData.phone}
               id=""
               placeholder="+7 (999)-999-99-99"
-              onChange={(e)=>setNum(e.target.value)}
+              onChange={handleChange}
             />
             <p>Введите логин:</p>
             <input
               className="m-1 bg-pink-100  rounded-xl focus:outline-none focus:border-indigo-200 focus:shadow-md transition duration-300 py-2 px-3 text-gray-800  placeholder-gray-500 "
               type="email"
-              name=""
+              name="login"
+              value={formData.login}
               id=""
               placeholder="example@gmail.com"
-              onChange={(e)=>setEmail(e.target.value)}
+              onChange={handleChange}
             />
             <p>Введите пароль:</p>
             <input
               className="m-1 bg-pink-100  rounded-xl focus:outline-none focus:border-indigo-200 focus:shadow-md transition duration-300 py-2 px-3 text-gray-800  placeholder-gray-500 "
               type="password"
-              onChange={(e)=>setPass(e.target.value)}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
             />
             <button className="m-3 py-2 px-2 bg-pink-200  border hover:bg-indigo-100  rounded-xl">
               Зарегистрироваться
